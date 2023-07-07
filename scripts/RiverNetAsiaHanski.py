@@ -13,7 +13,7 @@ import time as measure_time
 
 import scipy 
 
-path = '../data/RiverNet/Asia/'
+path = '../data/'
 
 alpha_array = np.linspace(15, 60, 12).round(2)
 

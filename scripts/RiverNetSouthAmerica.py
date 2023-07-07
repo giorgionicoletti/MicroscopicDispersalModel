@@ -11,7 +11,7 @@ import funPlots as fplot
 
 import time as measure_time
 
-path = '../data/RiverNet/SouthAmerica/'
+path = '../data/'
 
 f_array_plot = np.geomspace(0.9, 5, 50)
 xi = 2
