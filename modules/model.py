@@ -20,6 +20,9 @@ def find_effective_kernel_nb(f, xi, adj_matrix, Laplacian = None,
     Finds the effective coupling between different patches assuming a Monod
     function for the explorer creation rate. Numba boosted.
 
+    Note that this is already the transpose kernel appearing as is in the
+    dynamics.
+
     Parameters
     ----------
     f : float
@@ -831,6 +834,64 @@ def simulate(N, Nsteps, dt, K, cvec, evec, rho0 = None,
                 break
 
     return rho
+
+@njit
+def find_explorers(rho, K, cvec, lam):
+    """
+    Compute the number of explorers per empty site in each patch.
+    Recall that K is already the transpose of the effective kernel.
+
+    Parameters
+    ----------
+    rho : numpy.ndarray
+        Density of settled population in each patch.
+    K : numpy.ndarray
+        Effective kernel between patches.
+    cvec : numpy.ndarray
+        Vector of creation rates of explorers.
+    lam : float
+        Stopping rate of explorers.
+
+    Returns
+    -------
+    x : numpy.ndarray
+        Number of explorers per empty site in each patch.
+    """
+    return np.dot(K, rho*cvec)/lam
+
+@njit
+def find_explorers_dyn(rho, K, cvec, lam):
+    """
+    Compute the number of explorers per empty site in each patch, along
+    a dynamical trajectory.
+    Recall that K is already the transpose of the effective kernel.
+
+    Parameters
+    ----------
+    rho : numpy.ndarray
+        Density of settled population in each patch.
+        Shape: (Nsteps, N)
+    K : numpy.ndarray
+        Effective kernel between patches.
+    cvec : numpy.ndarray
+        Vector of creation rates of explorers.
+    lam : float
+        Stopping rate of explorers.
+
+    Returns
+    -------
+    x : numpy.ndarray
+        Number of explorers per empty site in each patch.
+    """
+    N = cvec.size
+    Nsteps = rho.shape[0]
+    x = np.zeros((Nsteps, N), dtype=np.float64)
+
+    for t in range(Nsteps):
+        x[t] = find_explorers(rho[t], K, cvec, lam)
+
+    return x
+
 
 @njit
 def simulate_Hanski(N, Nsteps, dt, distmatrix, alpha, cvec, evec, rho0 = None):
