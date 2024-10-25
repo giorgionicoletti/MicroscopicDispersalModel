@@ -1,0 +1,4 @@
+.DS_Store
+modules/__pycache__/model.cpython-39.pyc
+modules/__pycache__/rivernets.cpython-39.pyc
+modules/__pycache__/utils.cpython-39.pyc

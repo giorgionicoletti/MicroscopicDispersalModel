@@ -339,7 +339,7 @@ def build_adjacency_elevation_exponential(dem, slopes, xmin, xmax, ymin, ymax, b
     if to_nn is None:
         to_nn = np.array([[-1, -1], [-1, 0], [-1, 1], [0, 1],
                           [1, 1], [1, 0], [1, -1], [0, -1]])
-
+        
     Dmatrix = np.zeros((Nrows*Ncols, Nrows*Ncols), dtype = np.float64)
 
     for i in range(Nrows):
@@ -641,7 +641,7 @@ import matplotlib.animation as animation
 import sys
 
 sys.path.insert(0, '../../')
-import funPlots as fplot
+#import funPlots as fplot
 
 def update_plot(frame, matrix_list, im):
     im.set_array(matrix_list[frame])

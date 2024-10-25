@@ -93,7 +93,7 @@ def find_laplacian_nb(adj_matrix):
     laplacian : numpy.ndarray
         Laplacian matrix of the network.
     """
-    out_deg = np.sum(adj_matrix, axis=0)
+    out_deg = np.sum(adj_matrix, axis=1)
     N = adj_matrix.shape[0]
 
     laplacian = np.zeros((N,N), dtype = np.float64)
